@@ -14,19 +14,13 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 	private int SquaresInGridLength; // 20 => 20x20 grid
 	private int gridSize;// size of grid component  
 	private int gridSquareSize; // gridSize/numberOfSquaresInGrid
-	private Node[][] squares;
+	private Node[][] nodes;
 	private int startx=0;
 	private int starty=0;
 	private int finishx=49;
 	private int finishy=49;
 	private int CurrentlyDrawing = 0;
 	
-	public int getCurrentlyDrawing() {
-		return CurrentlyDrawing;
-	}
-	public void setCurrentlyDrawing(int currentlyDrawing) {
-		CurrentlyDrawing = currentlyDrawing;
-	}
 	//Constructor	
 	public Grid(int nbrOfSquares, int gridSize) {
 		addMouseListener(this);
@@ -34,31 +28,25 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 		setNumberOfSquaresInGrid(nbrOfSquares);
 		setGridSize(gridSize);
 		setGridSquareSize(gridSize/SquaresInGridLength);
-		setSquares(new Node[SquaresInGridLength][SquaresInGridLength]);
+		setNodes(new Node[SquaresInGridLength][SquaresInGridLength]);
 		populateSquares();
-		
 	}
 	//Getters&Setters
 	public int getNumberOfSquaresInGrid() {
 		return SquaresInGridLength;
 	}
-
 	public void setNumberOfSquaresInGrid(int numberOfSquaresInGrid) {
 		this.SquaresInGridLength = numberOfSquaresInGrid;
 	}
-
 	public int getGridSize() {
 		return gridSize;
 	}
-
 	public void setGridSize(int gridSize) {
 		this.gridSize = gridSize;
 	}
-
 	public int getGridSquareSize() {
 		return gridSquareSize;
 	}
-
 	public void setGridSquareSize(int gridSquareSize) {
 		this.gridSquareSize = gridSquareSize;
 	}
@@ -74,13 +62,12 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 	public void setFinishy(int finishy) {
 		this.finishy = finishy;
 	}
-	public Node[][] getSquares() {
-		return squares;
+	public Node[][] getNodes() {
+		return nodes;
 	}
-	public void setSquares(Node[][] squares) {
-		this.squares = squares;
+	public void setNodes(Node[][] nodes) {
+		this.nodes = nodes;
 	}
-	
 	public int getStartx() {
 		return startx;
 	}
@@ -93,42 +80,38 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 	public void setStarty(int starty) {
 		this.starty = starty;
 	}
+	public int getCurrentlyDrawing() {
+		return CurrentlyDrawing;
+	}
+	public void setCurrentlyDrawing(int currentlyDrawing) {
+		CurrentlyDrawing = currentlyDrawing;
+	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		for(int x = 0; x < SquaresInGridLength; x++) {	
 			for(int y = 0; y < SquaresInGridLength; y++) {
-				// 0 = start, 1 = finish, 2 = wall, 3 = empty, 4 = checked, 5 = backtrack/visualise
-				switch(getSquares()[x][y].getType()) {
-				case 0:
-					if (x==startx && y ==starty) {
+				// 0 = start, 1 = finish, 2 = wall, 3 = empty, 4 = checked, 5 = backtrack/path 
+				switch(getNodes()[x][y].getType()) {
+					case 0:
 						g.setColor(Color.GREEN);
-					} else {
-						g.setColor(Color.WHITE);
-						getSquares()[x][y].setType(3);
-					}
-					break;
-				case 1:
-					if (x==finishx && y ==finishy) {
+						break;
+					case 1:
 						g.setColor(Color.RED);
-					} else {
+						break;
+					case 2:
+						g.setColor(Color.BLACK);
+						break;
+					case 3:
 						g.setColor(Color.WHITE);
-						getSquares()[x][y].setType(3);
-					}
-					break;
-				case 2:
-					g.setColor(Color.BLACK);
-					break;
-				case 3:
-					g.setColor(Color.WHITE);
-					break;
-				case 4:
-					g.setColor(Color.YELLOW);
-					break;
-				case 5:
-					g.setColor(Color.BLUE);
-					break;
-			}
+						break;
+					case 4:
+						g.setColor(Color.YELLOW);
+						break;
+					case 5:
+						g.setColor(Color.BLUE);
+						break;
+				}
 				g.fillRect(x*gridSquareSize,y*gridSquareSize,gridSquareSize,gridSquareSize);
 				g.setColor(Color.BLACK);
 				g.drawRect(x*gridSquareSize,y*gridSquareSize,gridSquareSize,gridSquareSize);
@@ -136,78 +119,62 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 		}
 	}
 	
-	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		//getSquares()[finishx][finishy].setType(3); 
-		Node n = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
-		squares[e.getX()/gridSquareSize][e.getY()/gridSquareSize]= n;
-		if (CurrentlyDrawing == 1) {
-			finishx = n.getX();
-			finishy = n.getY();
+		if (CurrentlyDrawing == 2 || CurrentlyDrawing == 3) {
+			Node n = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
+			nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize]= n;
+			repaint();
 		}
-		if (CurrentlyDrawing == 0) {
-			startx = n.getX();
-			starty = n.getY();
-		}
-		
-		repaint();
-		
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-		
 	}
-	//Mouse Listeners
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// create a new square object of selected type 
-		// update the square in the squares list
-		// repaint the grid with the new list of squares
-		//Square s = new Square(1,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
-			///getSquares()[finishx][finishy].setType(3);
-			//getSquares()[startx][starty].setType(3);
-			Node n = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
-			squares[e.getX()/gridSquareSize][e.getY()/gridSquareSize]= n;
-			if (CurrentlyDrawing == 1) {
-				finishx = n.getX();
-				finishy = n.getY();
-			}
-			if (CurrentlyDrawing == 0) {
-				startx = n.getX();
-				starty = n.getY();
-			}
-			repaint();
+		//Create a new node with relevant type
+		Node newNode = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
+		// add the node to the node list
+		nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize]= newNode;
+		// if its a start of end node, replace the existing start or end node
+		if (CurrentlyDrawing == 1) {
+			nodes[finishx][finishy].setType(3);
+			finishx = newNode.getX();
+			finishy = newNode.getY();
+		} else if (CurrentlyDrawing == 0) {
+			nodes[startx][starty].setType(3);
+			startx = newNode.getX();
+			starty = newNode.getY();
+		}
+		
+		repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		
-		
 	}
 	public void populateSquares() {
-		//Populate the square array with squares of type empty
-		// the constructor accepts (int type, int x, int y) so we normally pass 3 as type since 3 = empty type
+		//Populate the node array with nodes of type empty
+		// the constructor accepts (int type, int x, int y) so we normally pass 3 as type since 3 = empty type 
 		// if its start we set it to 0
 		// if its end we set it to 1
 		// 0 = start, 1 = finish, 2 = wall, 3 = empty, 4 = checked, 5 = finalpath
@@ -221,7 +188,7 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 					type=1;
 				}
 				Node s = new Node(type,x,y);
-				getSquares()[x][y]=s;
+				getNodes()[x][y]=s;
 			}
 		}
 		/* 

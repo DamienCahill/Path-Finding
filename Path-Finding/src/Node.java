@@ -2,12 +2,12 @@
 public class Node {
 	
 	//Variables
-	private int type;
+	private int type; // type of node - 0 = start, 1 = finish, 2 = wall, 3 = empty, 4 = checked, 5 = backtrack/path 
 	private int x;
 	private int y;
-	private double distanceToEnd;
-	private int lastx;
-	private int lasty;
+	private double distanceToEnd; 
+	private int lastx; // the x  value that was explored before this node was explored
+	private int lasty; // the y value that was explored before this node was explored
 	private int hops;
 	
 	//Constructor
@@ -16,33 +16,27 @@ public class Node {
 		this.x=x;
 		this.y=y;
 		hops=-1;
-		
 		// if its the starting node then we made the hops 0
 		if (type==0)
 			hops=0;
-		}
+	}
 	
 	//Getters & Setters
 	public int getHops() {
 		return hops;
 	}
-
 	public void setHops(int hops) {
 		this.hops = hops;
 	}
-
 	public double getDistanceToEnd() {
 		return distanceToEnd;
 	}
-
 	public void setDistanceToEnd(double distanceToEnd) {
 		this.distanceToEnd = distanceToEnd;
 	}
-
 	public int getLastx() {
 		return lastx;
 	}
-
 	public void setLastx(int lastx) {
 		this.lastx = lastx;
 	}
@@ -50,15 +44,12 @@ public class Node {
 	public int getLasty() {
 		return lasty;
 	}
-
 	public void setLasty(int lasty) {
 		this.lasty = lasty;
 	}
-	
 	public int getType() {
 		return type;
 	}
-
 	public void setType(int type) {
 		this.type = type;
 	}
@@ -66,19 +57,15 @@ public class Node {
 	public int getX() {
 		return x;
 	}
-
 	public void setX(int x) {
 		this.x = x;
 	}
-
 	public int getY() {
 		return y;
 	}
-
 	public void setY(int y) {
 		this.y = y;
 	}
-	
 	//combo of setX and setY
 	public void setLastSquare(int x, int y) {
 		setLastx(x);
