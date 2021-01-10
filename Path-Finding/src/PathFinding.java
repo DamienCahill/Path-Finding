@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+
 
 public class PathFinding {
 	JFrame frame;
@@ -16,10 +19,34 @@ public class PathFinding {
 		new PathFinding();
 	}
 	public PathFinding() {
-		// Call the method to create frame + draw grid
-		drawGrid();
-		frame.add(btnStart);
-		btnStart.setBounds(300,1,100,100);
+		// Create the JFrame and set its  attributes
+				frame = new JFrame();
+				frame.setVisible(true);
+				frame.setResizable(false);
+				frame.setSize(535,635);
+				frame.setTitle("Path Finding");
+				frame.setLocationRelativeTo(null);
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.getContentPane().setLayout(null);
+				
+				// Create the grid, add it to the frame
+				grid = new Grid(50, 500);
+				grid.setBounds(10, 10,grid.getGridSize()+1, grid.getGridSize()+1);
+				frame.getContentPane().add(grid);
+		frame.getContentPane().add(btnStart);
+		btnStart.setBounds(20,521,100,28);
+		
+		JButton btnReset = new JButton("Reset");
+		btnReset.setBounds(20, 561, 100, 28);
+		frame.getContentPane().add(btnReset);
+		
+		JComboBox typeCBO = new JComboBox();
+		frame.getContentPane().add(typeCBO);
+		typeCBO.setBounds(264, 523, 106, 25);
+		
+		JLabel lblSelectType = new JLabel("Select Type to draw");
+		frame.getContentPane().add(lblSelectType);
+		lblSelectType.setBounds(139, 524, 120, 25);
 		
 		btnStart.addActionListener((ActionListener) new ActionListener() {
 			@Override
@@ -30,20 +57,6 @@ public class PathFinding {
 		});
 	}
 	public void drawGrid() {
-		// Create the JFrame and set its  attributes
-		frame = new JFrame();
-		frame.setVisible(true);
-		frame.setResizable(false);
-		frame.setSize(540,560);
-		frame.setTitle("Path Finding");
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
-		// Create the grid, add it to the frame
-		grid = new Grid(50, 500);
-		grid.setBounds(10, 10,grid.getGridSize()+1, grid.getGridSize()+1);
-		frame.getContentPane().add(grid);
 	}
 	public void AStar() {
 		ArrayList<Node> priority = new ArrayList<Node>();
