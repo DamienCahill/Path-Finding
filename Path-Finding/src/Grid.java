@@ -88,12 +88,10 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 	}
 
 	public void paintComponent(Graphics g) {
-		System.out.println("Painted");
 		super.paintComponent(g);
 		for(int x = 0; x < SquaresInGridLength; x++) {	
 			for(int y = 0; y < SquaresInGridLength; y++) {
-				// 0 = start, 1 = finish, 2 = wall, 3 = empty, 4 = checked, 5 = finalpath
-				// 0 = start, 1 = finish, 2 = wall, 3 = empty, 4 = checked, 5 = finalpath
+				// 0 = start, 1 = finish, 2 = wall, 3 = empty, 4 = checked, 5 = backtrack/visualise
 				switch(getSquares()[x][y].getType()) {
 				case 0:
 					g.setColor(Color.GREEN);
