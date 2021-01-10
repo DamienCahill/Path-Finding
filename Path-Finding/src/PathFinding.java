@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.DefaultComboBoxModel;
 
 
 public class PathFinding {
@@ -14,6 +15,7 @@ public class PathFinding {
 	boolean solving=false;
 	int pathLength=0;
 	int checks=0;
+	JComboBox typeCBO;
 	JButton btnStart = new JButton("Start");
 	public static void main(String[] args) {
 		new PathFinding();
@@ -37,12 +39,24 @@ public class PathFinding {
 		btnStart.setBounds(20,521,100,28);
 		
 		JButton btnReset = new JButton("Reset");
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				new PathFinding();
+			}
+		});
 		btnReset.setBounds(20, 561, 100, 28);
 		frame.getContentPane().add(btnReset);
 		
-		JComboBox typeCBO = new JComboBox();
+		typeCBO = new JComboBox();
+		typeCBO.setModel(new DefaultComboBoxModel(new String[] {"Start", "End", "Wall"}));
 		frame.getContentPane().add(typeCBO);
 		typeCBO.setBounds(264, 523, 106, 25);
+		typeCBO.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		        grid.setCurrentlyDrawing(typeCBO.getSelectedIndex());
+		    }
+		});
 		
 		JLabel lblSelectType = new JLabel("Select Type to draw");
 		frame.getContentPane().add(lblSelectType);

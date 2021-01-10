@@ -19,7 +19,14 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 	private int starty=0;
 	private int finishx=49;
 	private int finishy=49;
+	private int CurrentlyDrawing = 0;
 	
+	public int getCurrentlyDrawing() {
+		return CurrentlyDrawing;
+	}
+	public void setCurrentlyDrawing(int currentlyDrawing) {
+		CurrentlyDrawing = currentlyDrawing;
+	}
 	//Constructor	
 	public Grid(int nbrOfSquares, int gridSize) {
 		addMouseListener(this);
@@ -94,10 +101,20 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 				// 0 = start, 1 = finish, 2 = wall, 3 = empty, 4 = checked, 5 = backtrack/visualise
 				switch(getSquares()[x][y].getType()) {
 				case 0:
-					g.setColor(Color.GREEN);
+					if (x==startx && y ==starty) {
+						g.setColor(Color.GREEN);
+					} else {
+						g.setColor(Color.WHITE);
+						getSquares()[x][y].setType(3);
+					}
 					break;
 				case 1:
-					g.setColor(Color.RED);
+					if (x==finishx && y ==finishy) {
+						g.setColor(Color.RED);
+					} else {
+						g.setColor(Color.WHITE);
+						getSquares()[x][y].setType(3);
+					}
 					break;
 				case 2:
 					g.setColor(Color.BLACK);
@@ -122,11 +139,19 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		Node s = new Node(2,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
-		if (getSquares()[e.getX()/gridSquareSize][e.getY()/gridSquareSize].getType() >1) {
-			getSquares()[e.getX()/gridSquareSize][e.getY()/gridSquareSize] = s;
-			repaint();
+		//getSquares()[finishx][finishy].setType(3); 
+		Node n = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
+		squares[e.getX()/gridSquareSize][e.getY()/gridSquareSize]= n;
+		if (CurrentlyDrawing == 1) {
+			finishx = n.getX();
+			finishy = n.getY();
 		}
+		if (CurrentlyDrawing == 0) {
+			startx = n.getX();
+			starty = n.getY();
+		}
+		
+		repaint();
 		
 	}
 
@@ -148,11 +173,18 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 		// update the square in the squares list
 		// repaint the grid with the new list of squares
 		//Square s = new Square(1,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
-			getSquares()[finishx][finishy].setType(3); 
-			Node s = new Node(1,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
-			squares[e.getX()/gridSquareSize][e.getY()/gridSquareSize]= s;
-			finishx = s.getX();
-			finishy = s.getY();
+			///getSquares()[finishx][finishy].setType(3);
+			//getSquares()[startx][starty].setType(3);
+			Node n = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
+			squares[e.getX()/gridSquareSize][e.getY()/gridSquareSize]= n;
+			if (CurrentlyDrawing == 1) {
+				finishx = n.getX();
+				finishy = n.getY();
+			}
+			if (CurrentlyDrawing == 0) {
+				startx = n.getX();
+				starty = n.getY();
+			}
 			repaint();
 	}
 
