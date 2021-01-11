@@ -121,12 +121,16 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if (CurrentlyDrawing == 2 || CurrentlyDrawing == 3) {
-			if (nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize].getType() > 1) {
-				Node n = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
-				nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize] = n;
-				repaint();
+		try {
+			if (CurrentlyDrawing == 2 || CurrentlyDrawing == 3) {
+				if (nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize].getType() > 1) {
+					Node n = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
+					nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize] = n;
+					repaint();
+				}
 			}
+		} catch (Exception ex) {
+			
 		}
 	}
 
@@ -142,21 +146,25 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		//Create a new node with relevant type
-		Node newNode = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
-		// add the node to the node list
-		// if its a start of end node, replace the existing start or end node
-		if (CurrentlyDrawing == 1) {
-			nodes[finishx][finishy].setType(3);
-			finishx = newNode.getX();
-			finishy = newNode.getY();
-		} else if (CurrentlyDrawing == 0) {
-			nodes[startx][starty].setType(3);
-			startx = newNode.getX();
-			starty = newNode.getY();
+		try {
+			//Create a new node with relevant type
+			Node newNode = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
+			// add the node to the node list
+			// if its a start of end node, replace the existing start or end node
+			if (CurrentlyDrawing == 1) {
+				nodes[finishx][finishy].setType(3);
+				finishx = newNode.getX();
+				finishy = newNode.getY();
+			} else if (CurrentlyDrawing == 0) {
+				nodes[startx][starty].setType(3);
+				startx = newNode.getX();
+				starty = newNode.getY();
+			}
+			nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize] = newNode;
+			repaint();
+		} catch (Exception ex) {
+			
 		}
-		nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize] = newNode;
-		repaint();
 	}
 
 	@Override
