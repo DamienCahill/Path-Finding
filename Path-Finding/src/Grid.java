@@ -19,7 +19,7 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 	private int starty=0;
 	private int finishx=49;
 	private int finishy=49;
-	private int CurrentlyDrawing = 0;
+	private int currentlyDrawing = 2;
 	
 	//Constructor	
 	public Grid(int nbrOfSquares, int gridSize) {
@@ -81,10 +81,10 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 		this.starty = starty;
 	}
 	public int getCurrentlyDrawing() {
-		return CurrentlyDrawing;
+		return currentlyDrawing;
 	}
 	public void setCurrentlyDrawing(int currentlyDrawing) {
-		CurrentlyDrawing = currentlyDrawing;
+		this.currentlyDrawing = currentlyDrawing;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -122,9 +122,9 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		try {
-			if (CurrentlyDrawing == 2 || CurrentlyDrawing == 3) {
+			if (currentlyDrawing == 2 || currentlyDrawing == 3) {
 				if (nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize].getType() > 1) {
-					Node n = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
+					Node n = new Node(currentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
 					nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize] = n;
 					repaint();
 				}
@@ -148,14 +148,14 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 	public void mousePressed(MouseEvent e) {
 		try {
 			//Create a new node with relevant type
-			Node newNode = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
+			Node newNode = new Node(currentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
 			// add the node to the node list
 			// if its a start of end node, replace the existing start or end node
-			if (CurrentlyDrawing == 1) {
+			if (currentlyDrawing == 1) {
 				nodes[finishx][finishy].setType(3);
 				finishx = newNode.getX();
 				finishy = newNode.getY();
-			} else if (CurrentlyDrawing == 0) {
+			} else if (currentlyDrawing == 0) {
 				nodes[startx][starty].setType(3);
 				startx = newNode.getX();
 				starty = newNode.getY();

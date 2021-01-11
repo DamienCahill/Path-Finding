@@ -53,6 +53,7 @@ public class PathFinding {
 		typeCBO.setModel(new DefaultComboBoxModel(new String[] {"Start", "End", "Wall", "Eraser"}));
 		frame.getContentPane().add(typeCBO);
 		typeCBO.setBounds(264, 523, 106, 25);
+		typeCBO.setSelectedIndex(2);
 		
 		JLabel lblSelectType = new JLabel("Select Type to draw");
 		frame.getContentPane().add(lblSelectType);
@@ -82,6 +83,7 @@ public class PathFinding {
 				pathLength=0;
 				checks=0;
 				grid.populateSquares();
+				typeCBO.setSelectedIndex(2);
 			}
 		});
 	}
