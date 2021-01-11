@@ -122,9 +122,11 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (CurrentlyDrawing == 2 || CurrentlyDrawing == 3) {
-			Node n = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
-			nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize]= n;
-			repaint();
+			if (nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize].getType() > 1) {
+				Node n = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
+				nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize] = n;
+				repaint();
+			}
 		}
 	}
 
@@ -143,7 +145,6 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 		//Create a new node with relevant type
 		Node newNode = new Node(CurrentlyDrawing,e.getX()/gridSquareSize, e.getY()/gridSquareSize);
 		// add the node to the node list
-		nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize]= newNode;
 		// if its a start of end node, replace the existing start or end node
 		if (CurrentlyDrawing == 1) {
 			nodes[finishx][finishy].setType(3);
@@ -154,7 +155,7 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 			startx = newNode.getX();
 			starty = newNode.getY();
 		}
-		
+		nodes[e.getX()/gridSquareSize][e.getY()/gridSquareSize] = newNode;
 		repaint();
 	}
 
@@ -191,6 +192,7 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 				getNodes()[x][y]=s;
 			}
 		}
+		repaint();
 		/* 
 		 * debugging code
 		for(int x = 0; x < numberOfSquaresInGrid; x++) {	

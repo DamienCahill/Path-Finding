@@ -75,8 +75,13 @@ public class PathFinding {
 		
 		btnReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.dispose();
-				new PathFinding();
+				grid.setStartx(1);
+				grid.setStarty(1);
+				grid.setFinishx(49);
+				grid.setFinishy(49);
+				pathLength=0;
+				checks=0;
+				grid.populateSquares();
 			}
 		});
 	}
