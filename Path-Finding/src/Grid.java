@@ -201,13 +201,5 @@ public class Grid extends JPanel implements MouseListener, MouseMotionListener {
 			}
 		}
 		repaint();
-		/* 
-		 * debugging code
-		for(int x = 0; x < numberOfSquaresInGrid; x++) {	
-			for(int y = 0; y < numberOfSquaresInGrid; y++) {
-				System.out.println(squares[x][y].toString());
-			}
-		}
-		*/
 	}
 }
